@@ -1,0 +1,49 @@
+// MIT License
+// Copyright (c) 2026 Jayadev Rana
+//
+// Educational TradingView Pine Script strategy example.
+// This script demonstrates a simple SMA crossover strategy for Strategy Tester learning.
+//@version=6
+strategy("SMA Crossover Strategy - Jayadev Rana", overlay = true, initial_capital = 10000)
+
+// This strategy is a structure demo for learning Pine Script strategy entries.
+fastLength = input.int(9, "Fast SMA Length", minval = 1)
+slowLength = input.int(21, "Slow SMA Length", minval = 1)
+
+fastSma = ta.sma(close, fastLength)
+slowSma = ta.sma(close, slowLength)
+
+bullCross = ta.crossover(fastSma, slowSma)
+bearCross = ta.crossunder(fastSma, slowSma)
+
+// Opposite entries keep the demo simple and let Strategy Tester show reversals.
+if bullCross
+    strategy.entry("Long", strategy.long)
+
+if bearCross
+    strategy.entry("Short", strategy.short)
+
+plot(fastSma, "Fast SMA", color = color.aqua, linewidth = 2)
+plot(slowSma, "Slow SMA", color = color.orange, linewidth = 2)
+
+plotshape(
+     bullCross,
+     title = "Buy Marker",
+     style = shape.labelup,
+     location = location.belowbar,
+     color = color.green,
+     text = "BUY",
+     textcolor = color.white,
+     size = size.tiny
+)
+
+plotshape(
+     bearCross,
+     title = "Sell Marker",
+     style = shape.labeldown,
+     location = location.abovebar,
+     color = color.red,
+     text = "SELL",
+     textcolor = color.white,
+     size = size.tiny
+)
